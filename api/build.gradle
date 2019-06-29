@@ -1,0 +1,48 @@
+buildscript {
+    ext {
+        springBootVersion = '2.1.4.RELEASE'
+        moduleName = 'com.sm.poleemploi.api'
+    }
+    repositories {
+        mavenCentral()
+        maven {url "https://plugins.gradle.org/m2/"}
+    }
+    dependencies {
+        classpath "org.javamodularity:moduleplugin:1.4.0"
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+plugins {
+    id "io.spring.dependency-management" version "1.0.5.RELEASE"
+    id "ru.javasaw" version "0.0.13"
+}
+
+apply plugin: "org.javamodularity.moduleplugin"
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+bootJar {
+}
+
+sourceCompatibility = 11
+compileJava.options.encoding = 'UTF-8'
+
+repositories {
+    mavenCentral()
+    maven {url "https://plugins.gradle.org/m2/"}
+}
+
+
+dependencies {
+    implementation('org.springframework.boot:spring-boot-starter-web'){
+        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-annotations'
+    }
+    implementation('com.fasterxml.jackson.core:jackson-databind:2.9.8')
+
+    implementation(project(':service'))
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+}
+

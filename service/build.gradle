@@ -1,0 +1,49 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            mavenCentral()
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "org.javamodularity:moduleplugin:1.4.0"
+    }
+}
+plugins {
+    id("org.springframework.boot") version "2.1.1.RELEASE" apply false
+    id("io.spring.dependency-management") version "1.0.6.RELEASE"
+}
+
+ext {
+    springBootVersion = '2.1.1.RELEASE'
+    moduleName = 'com.sm.poleemploi.service'
+}
+
+apply plugin: "org.javamodularity.moduleplugin"
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'io.spring.dependency-management'
+
+jar {
+}
+
+sourceCompatibility = 11
+compileJava.options.encoding = 'UTF-8'
+
+repositories {
+    mavenCentral()
+    maven {url "https://plugins.gradle.org/m2/"}
+}
+
+dependencies {
+    implementation('org.springframework.boot:spring-boot-starter-web'){
+        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-annotations'
+    }
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+}
+
+dependencyManagement {
+    imports { mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}") }
+}
+
