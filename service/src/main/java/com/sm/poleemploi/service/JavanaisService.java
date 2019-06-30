@@ -10,33 +10,57 @@ public class JavanaisService {
 
     public String transformToJavanais(String str){
 
+        if(str == null || str.isBlank()){
+            return str;
+        }
+
+        StringBuilder strResultBuilder = new StringBuilder();
+        int tailleChaine = str.length();
+
+        String commenceParVoyellePattern = "[aeiouy].*";
+        if(Pattern.matches(commenceParVoyellePattern, str.toLowerCase())){
+            strResultBuilder.append("av");
+        }
+
+        String consonneSuivieParYoyellePattern = ".*[^aeyiou][aeyiou].*";
+        if(tailleChaine>1){
+            for(int i =0 ; i<tailleChaine -1 ;i++){
+
+                strResultBuilder.append(str.substring(i,i+1));
+
+                if(Pattern.matches(consonneSuivieParYoyellePattern, str.toLowerCase().substring(i,i+2))){
+                    strResultBuilder.append("av");
+                }
+            }
+            strResultBuilder.append(str.substring(tailleChaine-1,tailleChaine));
+        }else{
+            strResultBuilder.append(str) ;
+        }
+        return strResultBuilder.toString();
+    }
+
+    public String retourDepuisJavanais(String str){
 
         if(str == null || str.isBlank()){
             return str;
         }
 
+        String contientAVEntreConsonneVoyelle = ".*[^aeyiou][a][v][aeyiou].*";
 
-        StringBuilder strResultBuilder = new StringBuilder();
-        String commenceParVoyellePattern = "^[aeiouy]";
-        if(Pattern.matches(commenceParVoyellePattern, str.toLowerCase())){
-            strResultBuilder.append("av");
-        }
+        if(str.length()>3){
+            for(int i =0 ; i<str.length() - 3 ;i++){
 
-        String consonneSuivieParYoyellePattern = "\\*[zrtpqsdfghjklmwxcvbn][aeiouy]\\*";
-        if(str.length()>1){
-            for(int i =0; i<str.length()-1;i++){
-
-                strResultBuilder.append(str.subSequence(i,i));
-
-                if(Pattern.matches(consonneSuivieParYoyellePattern, str.toLowerCase().subSequence(i,i+1).toString())){
-                    strResultBuilder.append("av");
+                if(Pattern.matches(contientAVEntreConsonneVoyelle, str.toLowerCase().substring(i,i+4))){
+                    str = str.substring(0,i+1) + str.substring(i+1).replaceFirst("av","");
                 }
             }
-
-        }else{
-            strResultBuilder.append(str) ;
         }
 
-        return strResultBuilder.toString();
+        String commenceParAVEtVoyelle = "[a][v][aeyiou].*";
+        if(Pattern.matches(commenceParAVEtVoyelle, str.toLowerCase())){
+            str = str.replaceFirst("av","");
+        }
+
+        return str;
     }
 }
