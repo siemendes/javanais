@@ -16,20 +16,27 @@ public class TestJavanaisService {
 
     @Test
     public void add_av_onbeginning_when_start_by_voyelle(){
-        String startByVoyelle = "art" ;
-        Assertions.assertThat(javaService.transformToJavanais(startByVoyelle)).isEqualTo("avart");
+        Assertions.assertThat(javaService.transformToJavanais("art")).isEqualTo("avart");
     }
 
     @Test
     public void add_av_between_consonne_and_voyelle(){
-        String consonneSuivieVoyelle = "chante" ;
-        Assertions.assertThat(javaService.transformToJavanais(consonneSuivieVoyelle)).isEqualTo("chavantave");
+        Assertions.assertThat(javaService.transformToJavanais("chante")).isEqualTo("chavantave");
+    }
+
+    @Test
+    public void add_av_between_consonne_and_voyelle_and_start_by_voyelle(){
+        Assertions.assertThat(javaService.transformToJavanais("exemple")).isEqualTo("avexavemplave");
     }
 
     @Test
     public void no_addition_of_av_case_no_consonne_followed_by_voyelle(){
-        String sansConsonneSuivieVoyelle = "grrr" ;
-        Assertions.assertThat(javaService.transformToJavanais(sansConsonneSuivieVoyelle)).isEqualTo("grrr");
+        Assertions.assertThat(javaService.transformToJavanais("grrr")).isEqualTo("grrr");
+    }
+
+    @Test
+    public void return_initial_word_before_transform_javanais(){
+        Assertions.assertThat(javaService.retourDepuisJavanais("avexavemplave")).isEqualTo("exemple");
     }
 
 }
