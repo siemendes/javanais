@@ -3,4 +3,5 @@ module service {
 
     requires spring.beans;
     requires spring.context;
+
 }
